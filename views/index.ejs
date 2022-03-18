@@ -1,1 +1,36 @@
-Middle text
+<!-- Middle text -->
+<!-- < %=cData.Proximity(i)%> -->
+
+<table class="table table-dark table-striped table-hover">
+    <thead>
+      <tr>
+        <th scope="col">S.No.</th>
+        <th scope="col">X(m/s2)</th>
+        <th scope="col">Y(m/s2)</th>
+        <th scope="col">Z(m/s2)</th>
+        <th scope="col">Proximity(i)</th>
+        <th scope="col">Sound Level(dB)</th>
+        <th scope="col">Latitude</th>
+        <th scope="col">Longitude</th>
+        <th scope="col">Altitude(m)</th>
+        <th scope="col">Altitude-google(m)</th>
+        <th scope="col">Speed(Kmh)</th>
+        <th scope="col">Accuracy(m)</th>
+        <th scope="col">Orientation(deg)</th>
+        <th scope="col">Satellites in range</th>
+        <th scope="col">Time since start(ms)</th>
+        <th scope="col">YYYY-MO-DD HH-MI-SS_SSS</th>
+      </tr>
+    </thead>
+    <tbody>
+
+        <% for(let k=0;k<cData.length;k++){ %>
+            <tr>
+                <th scope="row"><%= k+1 %></th>
+                <td><%= cData[k] %></td>
+                
+                
+            </tr>
+        <% } %>
+    </tbody>
+  </table>

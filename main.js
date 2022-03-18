@@ -18,26 +18,32 @@ app.set('layout','layouts/layout');
 app.use(expressLayouts);
 app.use(express.static('public'));
 
-// const mongoose = require('mongoose');
+const mongoose = require('mongoose');
+const csvData = require('./models/indexDb');
 
-// mongoose.connect(process.env.DATBASE_URL,{useNewUrlParser:true});
-// const db = mongoose.connection;
-// db.on('error',error=>console.error(error));
-// db.once('open',() => console.log('connected to mongoose'));
+// mongoose.connect(process.env.DATBASE_URI,{useNewUrlParser:true});
+mongoose.connect("mongodb+srv://mg:%40%23Panchi22Cluster0@cluster0.olgru.mongodb.net/CSV?retryWrites=true&w=majority");
+const db = mongoose.connection;
+db.on('error',error=>console.error(error));
+db.once('open',() => console.log('connected to mongoose'));
 
 app.use('/',indexRouter);
 
 app.listen(process.env.PORT || 3000);
 
 
-
-fs.createReadStream('record3.csv')
-    .pipe(csv({}))
-    .on('data',(data)=>
-    {
-      results.push(data);
+// THIS WAS TO USE CSV FILES DIRECTLY IMPORTED IN THE PROJECT
+// fs.createReadStream('record3.csv')
+//     .pipe(csv({}))
+//     .on('data',(data)=>
+//     {
+//       results.push(data);
+//     })
+//     .on('end',()=>{
+//         // console.log(results);
+//     });
+   csvData.find({},function(err,data){
+      if(err) console.log(err);
+      console.log(data);
     })
-    .on('end',()=>{
-        console.log(results);
-    });
-    
+  
