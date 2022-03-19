@@ -1,36 +1,159 @@
-<!-- Middle text -->
-<!-- < %=cData.Proximity(i)%> -->
+<style>
+    #body{
+        overflow-x: scroll;
+    }
+    /* table{
+        overflow-x: scroll;
+        overflow-x: auto;
+    } */
+    h1{
+        text-align: center;
+    }
+    thead{
+        background-color: black;
+        color: white;
+        font-weight: 700;
+    }
+    table, th, td {
+    border: 1px solid;
+    }
+    th, td {
+    padding: 5px;
+    text-align: left;
+    }
+    
+    tr:nth-child(even) {background-color: #f2f2f2;}
+    tr:hover {background-color: coral;}
+</style>
+<body>
+    
 
-<table class="table table-dark table-striped table-hover">
-    <thead>
-      <tr>
-        <th scope="col">S.No.</th>
-        <th scope="col">X(m/s2)</th>
-        <th scope="col">Y(m/s2)</th>
-        <th scope="col">Z(m/s2)</th>
-        <th scope="col">Proximity(i)</th>
-        <th scope="col">Sound Level(dB)</th>
-        <th scope="col">Latitude</th>
-        <th scope="col">Longitude</th>
-        <th scope="col">Altitude(m)</th>
-        <th scope="col">Altitude-google(m)</th>
-        <th scope="col">Speed(Kmh)</th>
-        <th scope="col">Accuracy(m)</th>
-        <th scope="col">Orientation(deg)</th>
-        <th scope="col">Satellites in range</th>
-        <th scope="col">Time since start(ms)</th>
-        <th scope="col">YYYY-MO-DD HH-MI-SS_SSS</th>
-      </tr>
-    </thead>
-    <tbody>
+<div id="body">
+    <h1>AndroSensor CSV Data</h1>
+    <script >
+        let table = document.createElement('table');
+        let thead = document.createElement('thead');
+        let tbody = document.createElement('tbody');
 
-        <% for(let k=0;k<cData.length;k++){ %>
-            <tr>
-                <th scope="row"><%= k+1 %></th>
-                <td><%= cData[k] %></td>
-                
-                
-            </tr>
-        <% } %>
-    </tbody>
-  </table>
+        table.appendChild(thead);
+        table.appendChild(tbody);
+
+        // Adding the entire table to the body tag
+        document.getElementById('body').appendChild(table);
+
+        //  Creating and adding data to first row of the table
+        let row_1 = document.createElement('tr');
+        let heading_1 = document.createElement('th');
+        heading_1.innerHTML = "S.No.";
+        let heading_2 = document.createElement('th');
+        heading_2.innerHTML = "X(m/s2)";
+        let heading_3 = document.createElement('th');
+        heading_3.innerHTML = "Y(m/s2)";
+        let heading_4 = document.createElement('th');
+        heading_4.innerHTML = "Z(m/s2)";
+        let heading_5 = document.createElement('th');
+        heading_5.innerHTML = "Proximity(i)";
+        let heading_6 = document.createElement('th');
+        heading_6.innerHTML = "Sound Level(dB)";
+        let heading_7 = document.createElement('th');
+        heading_7.innerHTML = "Latitude";
+        let heading_8 = document.createElement('th');
+        heading_8.innerHTML = "Longitude";
+        let heading_9 = document.createElement('th');
+        heading_9.innerHTML = "Altitude(m)";
+        let heading_10 = document.createElement('th');
+        heading_10.innerHTML = "Altitude-google(m)";
+        let heading_11 = document.createElement('th');
+        heading_11.innerHTML = "Speed(Kmh)";
+        let heading_12 = document.createElement('th');
+        heading_12.innerHTML = "Accuracy(m)";
+        let heading_13 = document.createElement('th');
+        heading_13.innerHTML = "Orientation(deg)";
+        let heading_14 = document.createElement('th');
+        heading_14.innerHTML = "Satellites in range";
+        let heading_15 = document.createElement('th');
+        heading_15.innerHTML = "Time since start(ms)";
+        let heading_16 = document.createElement('th');
+        heading_16.innerHTML = "YYYY-MO-DD HH-MI-SS_SSS";
+
+        row_1.appendChild(heading_1);
+        row_1.appendChild(heading_2);
+        row_1.appendChild(heading_3);
+        row_1.appendChild(heading_4);
+        row_1.appendChild(heading_5);
+        row_1.appendChild(heading_6);
+        row_1.appendChild(heading_7);
+        row_1.appendChild(heading_8);
+        row_1.appendChild(heading_9);
+        row_1.appendChild(heading_10);
+        row_1.appendChild(heading_11);
+        row_1.appendChild(heading_12);
+        row_1.appendChild(heading_13);
+        row_1.appendChild(heading_14);
+        row_1.appendChild(heading_15);
+        row_1.appendChild(heading_16);
+        thead.appendChild(row_1);
+
+        let cData = '<%- JSON.stringify(cData) %>';
+        cData=JSON.parse(cData);
+        console.log(cData.length);
+        for(let k=0;k<Object.keys(cData).length;k++){
+            // Creating and adding data to row of the table
+            let row_2 = document.createElement('tr');
+            let row_2_data_1 = document.createElement('td');
+            row_2_data_1.innerHTML = k+1;
+            let row_2_data_2 = document.createElement('td');
+            row_2_data_2.innerHTML = cData[k]['ACCELEROMETER X (m/s²)'];
+            let row_2_data_3 = document.createElement('td');
+            row_2_data_3.innerHTML = cData[k]['ACCELEROMETER Y (m/s²)'];
+            let row_2_data_4 = document.createElement('td');
+            row_2_data_4.innerHTML = cData[k]['ACCELEROMETER Z (m/sÂ²)'];
+            let row_2_data_5 = document.createElement('td');
+            row_2_data_5.innerHTML = cData[k]['PROXIMITY (i)'];
+            let row_2_data_6 = document.createElement('td');
+            row_2_data_6.innerHTML = cData[k]['SOUND LEVEL (dB)'];
+            let row_2_data_7 = document.createElement('td');
+            row_2_data_7.innerHTML = cData[k]['LOCATION Latitude : '];
+            let row_2_data_8 = document.createElement('td');
+            row_2_data_8.innerHTML = cData[k]['LOCATION Longitude : '];
+            let row_2_data_9 = document.createElement('td');
+            row_2_data_9.innerHTML = cData[k]['LOCATION Altitude ( m)'];
+            let row_2_data_10 = document.createElement('td');
+            row_2_data_10.innerHTML = cData[k]['LOCATION Altitude-google ( m)'];
+            let row_2_data_11 = document.createElement('td');
+            row_2_data_11.innerHTML = cData[k]['LOCATION Speed ( Kmh)'];
+            let row_2_data_12 = document.createElement('td');
+            row_2_data_12.innerHTML = cData[k]['LOCATION Accuracy ( m)'];
+            let row_2_data_13 = document.createElement('td');
+            row_2_data_13.innerHTML = cData[k]['LOCATION ORIENTATION (°)'];
+            let row_2_data_14 = document.createElement('td');
+            row_2_data_14.innerHTML = cData[k]['Satellites in range'];
+            let row_2_data_15 = document.createElement('td');
+            row_2_data_15.innerHTML = cData[k]['Time since start in ms '];
+            let row_2_data_16 = document.createElement('td');
+            row_2_data_16.innerHTML = cData[k]['YYYY-MO-DD HH-MI-SS_SSS'];
+            
+
+            row_2.appendChild(row_2_data_1);
+            row_2.appendChild(row_2_data_2);
+            row_2.appendChild(row_2_data_3);
+            row_2.appendChild(row_2_data_4);
+            row_2.appendChild(row_2_data_5);
+            row_2.appendChild(row_2_data_6);
+            row_2.appendChild(row_2_data_7);
+            row_2.appendChild(row_2_data_8);
+            row_2.appendChild(row_2_data_9);
+            row_2.appendChild(row_2_data_10);
+            row_2.appendChild(row_2_data_11);
+            row_2.appendChild(row_2_data_12);
+            row_2.appendChild(row_2_data_13);
+            row_2.appendChild(row_2_data_14);
+            row_2.appendChild(row_2_data_15);
+            row_2.appendChild(row_2_data_16);
+            
+            tbody.appendChild(row_2);
+        }
+        
+    </script> 
+    </div> 
+</body>

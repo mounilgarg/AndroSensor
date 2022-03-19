@@ -2,37 +2,37 @@ const mongoose = require('mongoose');
 
 const csvSchema = new mongoose.Schema(
     {
-        "X(m/s2)":{
+        X:{
             type:Number,
         },
-        "Y(m/s2)":{
+        Y:{
             type:Number,
         },
-        "Z(m/s2)":{
+        Z:{
             type:Number,
         },
-        "Proximity(i)":{
+        Proximity:{
             type:Number,
         },
-        "Sound Level(dB)":{
+        Sound_Level:{
             type:Number,
         },
-        "Latitude":{
+        Latitude:{
             type:String,
         },
-        "Longitude":{
+        Longitude:{
             type:String,
         },
-        "Altitude(m)":{
+        Altitude:{
             type:String,
         },
-        "Altitude-google(m)":{
+        Altitude_google:{
             type:String,
         },
-        "Speed(Kmh)":{
+        Speed:{
             type:String,
         },
-        "Accuracy(m)":{
+        Accuracy:{
             type:String,
         },
         Orientation :{
@@ -44,7 +44,7 @@ const csvSchema = new mongoose.Schema(
         Time_since_start:{
             type:Number,
         },
-        "YYYY-MO-DD HH-MI-SS_SSS":{
+        dateTime:{
             type:Date,
         },
 

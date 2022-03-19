@@ -1,7 +1,7 @@
 if(process.env.NODE_ENV!=='production'){
   require('dotenv').config()
 }
-
+// import csvDb from 'indexDb.js';
 const express = require('express');
 const app = express();
 const expressLayouts = require('express-ejs-layouts');
@@ -10,6 +10,8 @@ const csv = require('csv-parser');
 const CSVToJSON = require("csvtojson");
 const JSONToCSV = require("json2csv").parse;
 const fs = require('fs');
+const ejs = require('ejs');
+
 const results = [];
 
 app.set('view engine','ejs');
@@ -28,6 +30,7 @@ db.on('error',error=>console.error(error));
 db.once('open',() => console.log('connected to mongoose'));
 
 app.use('/',indexRouter);
+
 
 app.listen(process.env.PORT || 3000);
 
