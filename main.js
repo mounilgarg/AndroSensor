@@ -6,6 +6,7 @@ const express = require('express');
 const app = express();
 const expressLayouts = require('express-ejs-layouts');
 const indexRouter = require('./routes/index');
+const statsRouter = require('./routes/stats');
 const csv = require('csv-parser');
 const CSVToJSON = require("csvtojson");
 const JSONToCSV = require("json2csv").parse;
@@ -30,9 +31,9 @@ db.on('error',error=>console.error(error));
 db.once('open',() => console.log('connected to mongoose'));
 
 app.use('/',indexRouter);
+app.use('/stats',statsRouter);
 
-
-app.listen(process.env.PORT || 3000);
+app.listen(process.env.PORT || 5000);
 
 
 // THIS WAS TO USE CSV FILES DIRECTLY IMPORTED IN THE PROJECT

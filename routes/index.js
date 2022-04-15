@@ -6,7 +6,7 @@ const ejs = require('ejs');
 
 
 
-//home localhost:3000 route will render index.ejs
+//home localhost:5000 route will render index.ejs
 // get method displays data on the webpage
 router.get('/', async (req,res)=>{
     // here cdata is the name we use toaccess db in ejs file
@@ -15,7 +15,13 @@ router.get('/', async (req,res)=>{
     })
       
 });
-
-
+// router.get('/stats', async (req,res)=>{
+//     // here cdata is the name we use toaccess db in ejs file
+//     csvData.find({},function(err,data){
+//         res.render('stats',{cData:data});
+//     })
+      
+// });
+// app.use('/stats',require('./stats'));
 
 module.exports=router;
