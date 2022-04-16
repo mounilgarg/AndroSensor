@@ -1,3 +1,4 @@
+const app = express();
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
@@ -15,18 +16,14 @@ router.get('/', async (req,res)=>{
     })
       
 });
-app.get('/stats', (req, res) => {
-
-    res.render('stats');
-    
-    });
-// router.get('/stats', async (req,res)=>{
-//     // here cdata is the name we use toaccess db in ejs file
-//     csvData.find({},function(err,data){
-//         res.render('stats',{cData:data});
-//     })
+router.get('/stats', async (req,res)=>{
+    // here cdata is the name we use toaccess db in ejs file
+    csvData.find({},function(err,data){
+        res.render('stats',{cData:data});
+    })
       
-// });
-// app.use('/stats',require('./stats'));
+});
+
+app.use('/stats',require('./stats'));
 
 module.exports=router;
