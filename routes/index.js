@@ -9,14 +9,14 @@ const ejs = require('ejs');
 
 //home localhost:5000 route will render index.ejs
 // get method displays data on the webpage
-router.get('/', async (req,res)=>{
-    // here cdata is the name we use toaccess db in ejs file
-    csvData.find({},function(err,data){
-        res.render('index',{cData:data});
-    })
+// router.get('/', async (req,res)=>{
+//     // here cdata is the name we use toaccess db in ejs file
+//     csvData.find({},function(err,data){
+//         res.render('index',{cData:data});
+//     })
       
-});
-router.get('/stats', async (req,res)=>{
+// });
+router.get('/', async (req,res)=>{
     // here cdata is the name we use toaccess db in ejs file
     csvData.find({},function(err,data){
         res.render('stats',{cData:data});
