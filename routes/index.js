@@ -15,6 +15,11 @@ router.get('/', async (req,res)=>{
     })
       
 });
+app.get('/stats', (req, res) => {
+
+    res.render('stats');
+    
+    });
 // router.get('/stats', async (req,res)=>{
 //     // here cdata is the name we use toaccess db in ejs file
 //     csvData.find({},function(err,data){

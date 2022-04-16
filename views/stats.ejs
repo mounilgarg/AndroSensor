@@ -1,12 +1,209 @@
-
-
+<style>
+    #body{
+        overflow-x: scroll;
+    }
+    table{
+        width: 100%;
+    }
+    h1{
+        text-align: center;
+    }
+    thead{
+        background-color: black;
+        color: white;
+        font-weight: 700;
+    }
+    table, th, td {
+    border: 1px solid;
+    }
+    th, td {
+    padding: 5px;
+    text-align: left;
+    }
+    
+    tr:nth-child(even) {background-color: #f2f2f2;}
+    tr:hover {background-color: coral;}
+</style>
 <body>
-    hello
-    <script>
-        let cData = '<%- JSON.stringify(cData) %>';
+    
+
+    <div id="body">
+        <h1>Windowing(Time Domain)  </h1>
+        <script >
+            let table = document.createElement('table');
+            let thead = document.createElement('thead');
+            let tbody = document.createElement('tbody');
+
+            table.appendChild(thead);
+            table.appendChild(tbody);
+
+            // Adding the entire table to the body tag
+            document.getElementById('body').appendChild(table);
+
+            //  Creating and adding data to first row of the table
+            let row_1 = document.createElement('tr');
+
+            let heading_1 = document.createElement('th');
+            heading_1.innerHTML = "Win.No.";
+            let heading_0 = document.createElement('th');
+            heading_0.innerHTML = "Win.Range";
+            let heading_2 = document.createElement('th');
+            heading_2.innerHTML = "Mean X";
+            let heading_3 = document.createElement('th');
+            heading_3.innerHTML = "Std Dev X";
+            let heading_4 = document.createElement('th');
+            heading_4.innerHTML = "Mean Y";
+            let heading_5 = document.createElement('th');
+            heading_5.innerHTML = "Std Dev Y";
+            let heading_6 = document.createElement('th');
+            heading_6.innerHTML = "Mean Z";
+            let heading_7 = document.createElement('th');
+            heading_7.innerHTML = "Std Dev Z";
+            
+
+            row_1.appendChild(heading_1);
+            row_1.appendChild(heading_0);
+            row_1.appendChild(heading_2);
+            row_1.appendChild(heading_3);
+            row_1.appendChild(heading_4);
+            row_1.appendChild(heading_5);
+            row_1.appendChild(heading_6);
+            row_1.appendChild(heading_7);
+            thead.appendChild(row_1);
+
+            let cData = '<%- JSON.stringify(cData) %>';
             cData=JSON.parse(cData);
-            console.log(cData[2]['ACCELEROMETER Y (m/s²)']);
-            cData[2]['ACCELEROMETER Y (m/s²)']
-            console.log("stats")
-    </script>
+            
+            var x=[];//contains acc in X
+            var y=[];//contains acc in Y
+            var z=[];//contains acc in Z
+            let w=64,s=16;//w= window size, s=stride
+
+            let cLength=Object.keys(cData).length;//total number of data values
+            let numRows=cLength/s;//number of windows created
+            var outX=Array.from({ length:Number(Math.ceil(numRows)) }, () => Array(w).fill(0));
+            var outY=Array.from({ length:Number(Math.ceil(numRows)) }, () => Array(w).fill(0));
+            var outZ=Array.from({ length:Number(Math.ceil(numRows)) }, () => Array(w).fill(0));
+            
+            //stores the accelerations in objects
+            for(let k=0;k<cLength;k++){
+                x[k]=cData[k]['ACCELEROMETER X (m/s²)'];
+                y[k]=cData[k]['ACCELEROMETER Y (m/s²)'];
+                z[k]=cData[k]['ACCELEROMETER Z (m/s²)'];
+            }
+
+            var out=windowing(x,y,z,outX,outY,outZ,w,s,cLength);
+
+            var result=statistics(out,numRows);
+            var meanX=result[0],meanY=result[2],meanZ=result[4],stdX=result[1],stdY=result[3],stdZ=result[5];
+
+            let cc=0;//for calculating win range start index
+            for(let k=0;k<Number(Math.ceil(numRows));k++){
+                // Creating and adding data to row of the table
+                
+                let row_2 = document.createElement('tr');
+                let row_2_data_1 = document.createElement('td');
+                row_2_data_1.innerHTML = k+1;
+                let row_2_data_0 = document.createElement('td');
+                row_2_data_0.innerHTML = cc+'-'+(cc+w-1);
+                let row_2_data_2 = document.createElement('td');
+                row_2_data_2.innerHTML = meanX[k];
+                let row_2_data_3 = document.createElement('td');
+                row_2_data_3.innerHTML =stdX[k] ;
+                let row_2_data_4 = document.createElement('td');
+                row_2_data_4.innerHTML = meanY[k];
+                let row_2_data_5 = document.createElement('td');
+                row_2_data_5.innerHTML =stdY[k]  ;
+                let row_2_data_6 = document.createElement('td');
+                row_2_data_6.innerHTML = meanZ[k];
+                let row_2_data_7 = document.createElement('td');
+                row_2_data_7.innerHTML =stdZ[k]  ;
+                
+
+                row_2.appendChild(row_2_data_1);
+                row_2.appendChild(row_2_data_0);
+                row_2.appendChild(row_2_data_2);
+                row_2.appendChild(row_2_data_3);
+                row_2.appendChild(row_2_data_4);
+                row_2.appendChild(row_2_data_5);
+                row_2.appendChild(row_2_data_6);
+                row_2.appendChild(row_2_data_7);
+            
+                
+                tbody.appendChild(row_2);
+                cc+=s;
+            }
+
+            // ///////////////////  FUNCTION SECTION /////////////////////
+
+            // calculation of stats for each window
+            function statistics(out,numRows){
+                let m=[],s=[],c=0,result=[];
+
+                //outer loop for each dimention: x,y,z
+                for(let i=0;i<3;i++){
+                    //inner loop for each window of current dimention
+                    for(let j=0;j<Number(Math.ceil(numRows));j++){
+                        m[j]=mean(out[i][j]);
+                        s[j]=std(out[i][j],m[j]);
+                    }
+                    result[c]=m;
+                    result[c+1]=s;
+                    c+=2;
+                }
+                return result;
+            }
+            
+            // mean function
+            function mean(arr){
+                var sum = arr.reduce(function(a, b){
+                    return a + b;
+                }, 0);
+                return sum/arr.length;
+            }
+            
+            // standard deviation function
+            function std(arr,m){
+                // Assigning (value - mean) ^ 2 to every array item
+                arr = arr.map((k)=>{
+                    return (k - m) ** 2
+                })
+                
+                // Calculating the sum of updated array
+                let sum = arr.reduce((acc, curr)=> acc + curr, 0);
+                
+                // Calculating the variance
+                let variance = sum / arr.length;
+                
+                // Returning the Standard deviation
+                return Math.sqrt(variance);
+            }
+            
+            // creates windows of specified length, and given stride
+            function windowing(x,y,z,outX,outY,outZ,w,s,cLength){
+                let i=0,row=0;
+
+                //increments the stride to form total  number of windows
+                while(i<=cLength-1){
+                    j=i;
+                    let col=0;
+
+                    //this loop creates a window for current stride
+                    while(col<w && j<=cLength-1){
+                        outX[row][col]=x[j];
+                        outY[row][col]=y[j];
+                        outZ[row][col]=z[j];
+                        j+=1;
+                        col+=1
+                    }
+                    i+=s;
+                    row+=1;
+                }
+                out={0:outX, 1:outY, 2:outZ};
+                return out;
+            }
+            // ///////////////////  FUNCTION SECTION END /////////////////////
+        </script> 
+    </div> 
 </body>
+
