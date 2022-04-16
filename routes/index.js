@@ -1,4 +1,4 @@
-const app = express();
+
 const express = require('express');
 const router = express.Router();
 const mongoose = require('mongoose');
@@ -24,6 +24,6 @@ router.get('/stats', async (req,res)=>{
       
 });
 
-app.use('/stats',require('./stats'));
+// app.use('/stats',require('./stats'));
 
 module.exports=router;
